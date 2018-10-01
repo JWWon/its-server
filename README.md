@@ -1,16 +1,13 @@
+# 잇츠교정 서버
+
+TODO fill in
+
 # Koa Boilerplate
 
 <a href="https://communityinviter.com/apps/koa-js/koajs" rel="KoaJs Slack Community">![KoaJs Slack](https://img.shields.io/badge/Koa.Js-Slack%20Channel-Slack.svg?longCache=true&style=for-the-badge)</a>
 
-
-
 ✨ A boilerplate for writing beautiful `async-await`-based Koa API's using `babel` for **Node v8.0 and above!**. 🚀
 
-## Setting up shop
-
-Clone this repo and adjust details in `package.json`. Remove the `.git` directory and `git init` to start fresh.
-
-Read on to learn how to actually start being productive.
 
 ## What's in the package?
 

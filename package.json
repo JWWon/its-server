@@ -1,9 +1,8 @@
 {
-  "name": "koa-es7-boilerplate",
+  "name": "its-server",
   "version": "0.0.0",
-  "description": "A boilerplate for writing Koa 2 apps with Babel.",
-  "author": "Jeff Hansen",
-  "license": "MIT",
+  "description": "A server for its-kyojeong client",
+  "author": "Jaeseong Seo",
   "engines": {
     "node": ">=8.0.0",
     "npm": ">=3.8"
