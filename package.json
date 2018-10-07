@@ -22,6 +22,7 @@
     "awilix-koa": "^2.1.1",
     "axios": "^0.18.0",
     "bristol": "^0.4.0",
+    "dynamoose": "^1.0.0",
     "fejl": "^1.0.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
