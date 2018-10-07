@@ -5,8 +5,10 @@ import respond from 'koa-respond'
 import bodyParser from 'koa-bodyparser'
 import compress from 'koa-compress'
 import { scopePerRequest, loadControllers } from 'awilix-koa'
+import dynamoose from 'dynamoose'
 
 import { logger } from './logger'
+import { env } from './env'
 import { configureContainer } from './container'
 import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
@@ -20,6 +22,14 @@ import { errorHandler } from '../middleware/error-handler'
 export async function createServer() {
   logger.debug('Creating server...')
   const app = new Koa()
+
+  dynamoose.AWS.config.update({
+    accessKeyId: env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    region: env.AWS_REGION
+  })
+  // Development
+  dynamoose.local()
 
   // Container is configured with our services and whatnot.
   const container = (app.container = configureContainer())
