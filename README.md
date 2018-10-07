@@ -1,6 +1,10 @@
 # 잇츠교정 서버
 
-TODO fill in
+[로컬에 DynamoDB 설정](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/DynamoDBLocal.html) 후,
+`yarn dev`로 로컬서버 실행
+
+기본 `http://localhost:5000`에서 실행됩니다.
+
 
 # Koa Boilerplate
 
