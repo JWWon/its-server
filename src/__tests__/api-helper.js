@@ -16,13 +16,13 @@ export async function apiHelper() {
     catch: catchAndLog, // Useful for logging failing requests
     client,
     // Add your app-specific methods here.
-    findTodos: params =>
-      client.get(`/todos`, { params }).then(assertStatus(200)),
-    getTodo: id => client.get(`/todos/${id}`).then(assertStatus(200)),
-    createTodo: data => client.post('/todos', data).then(assertStatus(201)),
-    updateTodo: (id, data) =>
-      client.patch(`/todos/${id}`, data).then(assertStatus(200)),
-    removeTodo: id => client.delete(`/todos/${id}`).then(assertStatus(204))
+    findClinics: params =>
+      client.get(`/clinics`, { params }).then(assertStatus(200)),
+    getClinic: id => client.get(`/clinics/${id}`).then(assertStatus(200)),
+    createClinic: data => client.post('/clinics', data).then(assertStatus(201)),
+    updateClinic: (id, data) =>
+      client.patch(`/clinics/${id}`, data).then(assertStatus(200)),
+    removeClinic: id => client.delete(`/clinics/${id}`).then(assertStatus(204))
   }
 }
 
