@@ -1,11 +1,16 @@
 import { createController } from 'awilix-koa'
 import shortid from 'shortid'
-import { NotFound } from 'fejl'
+import { NotFound, BadRequest } from 'fejl'
+
+const getId = ctx => {
+  BadRequest.assert(ctx.params.id, 'No id given')
+  return ctx.params.id
+}
 
 const api = Clinic => ({
   find: async ctx => ctx.ok(await Clinic.scan().exec()), // TODO deal with ctx.query
   get: async ctx => {
-    const clinic = await Clinic.get(ctx.params.id)
+    const clinic = await Clinic.get(getId(ctx))
     NotFound.assert(clinic, 'Clinic not found')
     ctx.ok(clinic)
   },
@@ -14,8 +19,8 @@ const api = Clinic => ({
       await Clinic.create({ ...ctx.request.body, id: shortid.generate() })
     ),
   update: async ctx =>
-    ctx.ok(await Clinic.update({ id: ctx.params.id }, ctx.request.body)),
-  remove: async ctx => ctx.noContent(await Clinic.delete({ id: ctx.params.id }))
+    ctx.ok(await Clinic.update({ id: getId(ctx) }, ctx.request.body)),
+  remove: async ctx => ctx.noContent(await Clinic.delete({ id: getId(ctx) }))
 })
 
 export default createController(api)
