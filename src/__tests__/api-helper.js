@@ -5,17 +5,19 @@ import axios from 'axios'
 /**
  * API helper to make it easier to test endpoints.
  */
-export async function apiHelper() {
+export async function apiHelper(token) {
   const server = await startServer()
   const baseURL = `http://127.0.0.1:${server.address().port}`
   const client = axios.create({
-    baseURL
+    baseURL,
+    headers: token ? { Authorization: token } : undefined
   })
 
   return {
     catch: catchAndLog, // Useful for logging failing requests
     client,
-    // Add your app-specific methods here.
+    signin: data => client.post('/signin', data).then(assertStatus(200)),
+    signup: data => client.post('/signup', data).then(assertStatus(201)),
     findClinics: params =>
       client.get(`/clinics`, { params }).then(assertStatus(200)),
     getClinic: id => client.get(`/clinics/${id}`).then(assertStatus(200)),
