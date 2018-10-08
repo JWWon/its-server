@@ -10,6 +10,7 @@ import dynamoose from 'dynamoose'
 import { logger } from './logger'
 import { env } from './env'
 import { configureContainer } from './container'
+import auth from '../middleware/auth'
 import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
 
@@ -44,6 +45,7 @@ export async function createServer() {
     .use(cors())
     // Parses request bodies.
     .use(bodyParser())
+    .use(auth())
     // Creates an Awilix scope per request. Check out the awilix-koa
     // docs for details: https://github.com/jeffijoe/awilix-koa
     .use(scopePerRequest(container))
