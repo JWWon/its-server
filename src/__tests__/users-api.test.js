@@ -32,6 +32,7 @@ describe('users API', () => {
   it('can signup', async () => {
     const signinApi = await apiHelper()
     const { token } = await signinApi.signin(adminUser)
+    expect(token).toBeDefined()
 
     const api = await apiHelper(token)
     const user = randomUser()

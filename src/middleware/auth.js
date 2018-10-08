@@ -42,7 +42,7 @@ export default () => {
   return async function(ctx, next) {
     try {
       const headers = ctx.request.headers
-      const token = headers && headers['Authorization']
+      const token = headers && headers.authorization
       if (token) {
         ctx.user = jwt.verify(token, env.SECRET)
         ctx.signup = signup
