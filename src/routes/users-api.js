@@ -6,6 +6,7 @@ const api = () => ({
     const { email, password } = ctx.request.body
     BadRequest.assert(email, 'Missing email')
     BadRequest.assert(password, 'Missing password')
+    BadRequest.assert(!ctx.user, 'Already signed in')
     return ctx.ok(await ctx.signin(email, password))
   },
   signup: async ctx => {
