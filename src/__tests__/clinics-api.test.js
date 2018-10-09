@@ -1,11 +1,25 @@
 import { apiHelper } from './api-helper'
 import { throws } from 'smid'
+import { sample } from 'lodash'
 
 const generateClinic = () => {
+  const provinces = ['서울', '경기', '강원', '충청', '경상', '전라', '제주']
+  const cities = {
+    서울: ['관악구', '강남구', '마포구'],
+    경기: ['광주시', '안산시', '김포시'],
+    강원: ['양주시', '춘천시', '원주시'],
+    충청: ['충주시', '청주시'],
+    경상: ['경주시', '상주시'],
+    전라: ['광주시', '전주시'],
+    제주: ['서귀포시']
+  }
+  const names = ['좋은 치과', '나쁜 치과', '이상한 치과']
+  const province = sample(provinces)
+  const city = sample(cities[province])
   return {
-    province: '서울',
-    city: '관악구',
-    name: '좋은 치과'
+    province,
+    city,
+    name: sample(names)
   }
 }
 
