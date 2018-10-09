@@ -1,15 +1,12 @@
 import { apiHelper } from './api-helper'
 import { throws } from 'smid'
 import shortid from 'shortid'
-
-const adminUser = {
-  email: 'admin@admin.com',
-  password: 'admin'
-}
+import { sample } from 'lodash'
 
 const randomUser = () => {
+  const domains = ['naver.com', 'gmail.com', 'test.kr']
   return {
-    email: `${shortid.generate()}@${shortid.generate()}.com`,
+    email: `${shortid.generate()}@${sample(domains)}`,
     password: 'random'
   }
 }
@@ -22,19 +19,11 @@ describe('users API', () => {
   })
 
   it('can signin', async () => {
-    const api = await apiHelper()
-    const user = await api.signin(adminUser)
-
-    expect(user.email).toEqual(adminUser.email)
-    expect(user.token).toBeDefined()
+    await apiHelper(true)
   })
 
   it('can signup', async () => {
-    const signinApi = await apiHelper()
-    const { token } = await signinApi.signin(adminUser)
-    expect(token).toBeDefined()
-
-    const api = await apiHelper(token)
+    const api = await apiHelper(true)
     const user = randomUser()
     const created = await api.signup(user)
     expect(created.email).toEqual(user.email)

@@ -25,7 +25,7 @@ const generateClinic = () => {
 
 describe('clinics API', () => {
   it('can create clinic', async () => {
-    const api = await apiHelper()
+    const api = await apiHelper(true)
     const data = generateClinic()
     const clinic = await api.createClinic(data)
 
@@ -35,7 +35,7 @@ describe('clinics API', () => {
   })
 
   it('can get clinic', async () => {
-    const api = await apiHelper()
+    const api = await apiHelper(true)
     const created = await api.createClinic(generateClinic())
 
     const gotten = await api.getClinic(created.id)
@@ -43,7 +43,7 @@ describe('clinics API', () => {
   })
 
   it('can remove clinic', async () => {
-    const api = await apiHelper()
+    const api = await apiHelper(true)
     const created = await api.createClinic(generateClinic())
 
     await api.removeClinic(created.id)
@@ -53,7 +53,7 @@ describe('clinics API', () => {
   })
 
   it('can find clinics', async () => {
-    const api = await apiHelper()
+    const api = await apiHelper(true)
     const created = await api.createClinic(generateClinic())
 
     const result = await api.findClinics()
@@ -61,7 +61,7 @@ describe('clinics API', () => {
   })
 
   it('can update clinic', async () => {
-    const api = await apiHelper()
+    const api = await apiHelper(true)
     const created = await api.createClinic(generateClinic())
     const newName = '나쁜 병원'
 

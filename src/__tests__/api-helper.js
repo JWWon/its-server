@@ -2,12 +2,20 @@ import { createServer } from '../lib/server'
 import { memoize } from 'lodash'
 import axios from 'axios'
 
+const adminUser = {
+  email: 'admin@admin.com',
+  password: 'admin'
+}
+
 /**
  * API helper to make it easier to test endpoints.
  */
-export async function apiHelper(token) {
+export async function apiHelper(admin) {
   const server = await startServer()
   const baseURL = `http://127.0.0.1:${server.address().port}`
+  const { token } = admin
+    ? await axios.post(baseURL + '/signin', adminUser).then(assertStatus(200))
+    : {}
   const client = axios.create({
     baseURL,
     headers: token ? { Authorization: token } : undefined
@@ -16,7 +24,6 @@ export async function apiHelper(token) {
   return {
     catch: catchAndLog, // Useful for logging failing requests
     client,
-    signin: data => client.post('/signin', data).then(assertStatus(200)),
     signup: data => client.post('/signup', data).then(assertStatus(201)),
     findClinics: params =>
       client.get(`/clinics`, { params }).then(assertStatus(200)),
