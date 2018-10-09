@@ -34,6 +34,16 @@ export async function apiHelper(admin) {
         client.patch(`/clinics/${id}`, data).then(assertStatus(200)),
       remove: id => client.delete(`/clinics/${id}`).then(assertStatus(204))
     },
+    announcements: {
+      find: params =>
+        client.get(`/announcements`, { params }).then(assertStatus(200)),
+      create: data =>
+        client.post('/announcements', data).then(assertStatus(201)),
+      update: (id, data) =>
+        client.patch(`/announcements/${id}`, data).then(assertStatus(200)),
+      remove: id =>
+        client.delete(`/announcements/${id}`).then(assertStatus(204))
+    },
     meta: {
       get: () => client.get('/meta').then(assertStatus(200)),
       update: data => client.patch('/meta', data).then(assertStatus(200))
