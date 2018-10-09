@@ -5,7 +5,13 @@ const Clinic = dynamoose.model('Clinic', {
     type: String,
     hashKey: true
   },
-  province: String,
+  province: {
+    type: String,
+    index: {
+      global: true,
+      rangeKey: 'city'
+    }
+  },
   city: String,
   name: String,
   phone: String,
