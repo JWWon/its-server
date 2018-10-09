@@ -13,6 +13,7 @@ const adminUser = {
 export async function apiHelper(admin) {
   const server = await startServer()
   const baseURL = `http://127.0.0.1:${server.address().port}`
+  // const baseURL = 'http://localhost:5000'
   const { token } = admin
     ? await axios.post(baseURL + '/signin', adminUser).then(assertStatus(200))
     : {}
@@ -43,6 +44,13 @@ export async function apiHelper(admin) {
         client.patch(`/announcements/${id}`, data).then(assertStatus(200)),
       remove: id =>
         client.delete(`/announcements/${id}`).then(assertStatus(204))
+    },
+    images: {
+      find: params => client.get(`/images`, { params }).then(assertStatus(200)),
+      create: data => client.post('/images', data).then(assertStatus(201)),
+      update: (id, data) =>
+        client.patch(`/images/${id}`, data).then(assertStatus(200)),
+      remove: id => client.delete(`/images/${id}`).then(assertStatus(204))
     },
     meta: {
       get: () => client.get('/meta').then(assertStatus(200)),
