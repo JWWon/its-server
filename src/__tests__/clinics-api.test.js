@@ -27,7 +27,7 @@ describe('clinics API', () => {
   it('can create clinic', async () => {
     const api = await apiHelper(true)
     const data = generateClinic()
-    const clinic = await api.createClinic(data)
+    const clinic = await api.clinics.create(data)
 
     expect(clinic.id).toBeDefined()
     expect(clinic.nonexistent).not.toBeDefined()
@@ -36,37 +36,37 @@ describe('clinics API', () => {
 
   it('can get clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.createClinic(generateClinic())
+    const created = await api.clinics.create(generateClinic())
 
-    const gotten = await api.getClinic(created.id)
+    const gotten = await api.clinics.get(created.id)
     expect(gotten).toEqual(created)
   })
 
   it('can remove clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.createClinic(generateClinic())
+    const created = await api.clinics.create(generateClinic())
 
-    await api.removeClinic(created.id)
+    await api.clinics.remove(created.id)
 
-    const { response } = await throws(api.getClinic(created.id))
+    const { response } = await throws(api.clinics.get(created.id))
     expect(response.status).toBe(404)
   })
 
   it('can find clinics', async () => {
     const api = await apiHelper(true)
-    const created = await api.createClinic(generateClinic())
+    const created = await api.clinics.create(generateClinic())
 
-    const result = await api.findClinics()
+    const result = await api.clinics.find()
     expect(result).toContainEqual(created)
   })
 
   it('can update clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.createClinic(generateClinic())
+    const created = await api.clinics.create(generateClinic())
     const newName = '나쁜 병원'
 
-    const updated = await api
-      .updateClinic(created.id, { name: newName })
+    const updated = await api.clinics
+      .update(created.id, { name: newName })
       .catch(api.catch)
 
     expect(updated.id).toBe(created.id)

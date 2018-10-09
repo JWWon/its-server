@@ -25,13 +25,19 @@ export async function apiHelper(admin) {
     catch: catchAndLog, // Useful for logging failing requests
     client,
     signup: data => client.post('/signup', data).then(assertStatus(201)),
-    findClinics: params =>
-      client.get(`/clinics`, { params }).then(assertStatus(200)),
-    getClinic: id => client.get(`/clinics/${id}`).then(assertStatus(200)),
-    createClinic: data => client.post('/clinics', data).then(assertStatus(201)),
-    updateClinic: (id, data) =>
-      client.patch(`/clinics/${id}`, data).then(assertStatus(200)),
-    removeClinic: id => client.delete(`/clinics/${id}`).then(assertStatus(204))
+    clinics: {
+      find: params =>
+        client.get(`/clinics`, { params }).then(assertStatus(200)),
+      get: id => client.get(`/clinics/${id}`).then(assertStatus(200)),
+      create: data => client.post('/clinics', data).then(assertStatus(201)),
+      update: (id, data) =>
+        client.patch(`/clinics/${id}`, data).then(assertStatus(200)),
+      remove: id => client.delete(`/clinics/${id}`).then(assertStatus(204))
+    },
+    meta: {
+      get: () => client.get('/meta').then(assertStatus(200)),
+      update: data => client.patch('/meta', data).then(assertStatus(200))
+    }
   }
 }
 
