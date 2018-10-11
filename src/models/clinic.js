@@ -27,7 +27,8 @@ const Clinic = dynamoose.model('Clinic', {
   createdAt: String, // Parsable with either Date or moment
   hits: Number,
   grade: Number, // 2: A, 1: B, 0: C, -1: D
-  hidden: Boolean
+  hidden: Boolean,
+  tags: [String]
 })
 
 export default Clinic

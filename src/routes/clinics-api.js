@@ -38,6 +38,8 @@ const api = Clinic => ({
         .or()
         .filter('landmark')
         .contains(keyword)
+        .filter('tags')
+        .contains(keyword)
     if (after) query = query.startAt(after)
     if (ctx.user) return ctx.ok(await query.exec())
 
@@ -52,6 +54,7 @@ const api = Clinic => ({
       'webpage',
       'director',
       'certificates',
+      'tags',
       'hidden'
     ]
     return ctx.ok(

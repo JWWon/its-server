@@ -1,6 +1,6 @@
 import { apiHelper } from './api-helper'
 import { throws } from 'smid'
-import { sample } from 'lodash'
+import { sample, sampleSize } from 'lodash'
 
 const generateClinic = () => {
   const provinces = ['서울', '경기', '강원', '충청', '경상', '전라', '제주']
@@ -16,10 +16,19 @@ const generateClinic = () => {
   const names = ['좋은 치과', '나쁜 치과', '이상한 치과']
   const province = sample(provinces)
   const city = sample(cities[province])
+  const tags = [
+    'tag a',
+    'tag b',
+    'tag c',
+    'can a tag have spaces?',
+    'hello',
+    'world'
+  ]
   return {
     province,
     city,
-    name: sample(names)
+    name: sample(names),
+    tags: sampleSize(tags, 3)
   }
 }
 
