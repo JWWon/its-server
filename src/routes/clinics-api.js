@@ -39,9 +39,8 @@ const api = Clinic => ({
         .filter('landmark')
         .contains(keyword)
     if (after) query = query.startAt(after)
-    if (ctx.user) {
-      return ctx.ok(await query.exec())
-    }
+    if (ctx.user) return ctx.ok(await query.exec())
+
     const permittedAttrs = [
       'id',
       'province',
