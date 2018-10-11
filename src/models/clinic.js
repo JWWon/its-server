@@ -28,7 +28,10 @@ const Clinic = dynamoose.model('Clinic', {
   hits: Number,
   grade: Number, // 2: A, 1: B, 0: C, -1: D
   hidden: Boolean,
-  tags: [String]
+  tags: {
+    type: 'list',
+    list: [String]
+  }
 })
 
 export default Clinic
