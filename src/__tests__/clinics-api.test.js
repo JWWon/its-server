@@ -60,6 +60,13 @@ describe('clinics API', () => {
     expect(result).toContainEqual(created)
   })
 
+  it('can find clinics with keyword', async () => {
+    const api = await apiHelper()
+
+    const result = await api.clinics.find({ keyword: '병원' })
+    expect(result.length).toBeGreaterThan(0)
+  })
+
   it('can update clinic', async () => {
     const api = await apiHelper(true)
     const created = await api.clinics.create(generateClinic())

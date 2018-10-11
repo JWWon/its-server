@@ -1,7 +1,7 @@
 import { createController } from 'awilix-koa'
 import shortid from 'shortid'
 import { NotFound, BadRequest, Forbidden } from 'fejl'
-import { reduce } from 'lodash'
+import { reduce, filter } from 'lodash'
 
 const getId = ctx => {
   BadRequest.assert(ctx.params.id, 'No id given')
@@ -10,7 +10,7 @@ const getId = ctx => {
 
 const api = Clinic => ({
   find: async ctx => {
-    const { province, city, name, landmark, after } = ctx.query
+    const { province, city, keyword, after } = ctx.query
     let query
     if (province) {
       query = Clinic.query('province').eq(province)
@@ -31,8 +31,13 @@ const api = Clinic => ({
       }
     }
     query = query || Clinic.scan()
-    if (name) query = query.filter('name').contains(name)
-    if (landmark) query = query.filter('landmark').contains(landmark)
+    if (keyword)
+      query = query
+        .filter('name')
+        .contains(keyword)
+        .or()
+        .filter('landmark')
+        .contains(keyword)
     if (after) query = query.startAt(after)
     if (ctx.user) {
       return ctx.ok(await query.exec())
@@ -47,14 +52,11 @@ const api = Clinic => ({
       'landmark',
       'webpage',
       'director',
-      'certificates'
+      'certificates',
+      'hidden'
     ]
     return ctx.ok(
-      await query
-        .filter('hidden')
-        .not()
-        .eq(true)
-        .attributes(permittedAttrs)
+      filter(await query.attributes(permittedAttrs).exec(), c => !c.hidden)
     )
   },
   get: async ctx => {
