@@ -39,6 +39,9 @@ export default () => {
     return { ...data, token }
   }
 
+  // Create initial admin account
+  // signup('admin@admin.com', 'admin', '관리자').then((user) => console.log('Admin account created')).catch(console.err)
+
   return async function(ctx, next) {
     try {
       const headers = ctx.request.headers
