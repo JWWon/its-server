@@ -335,7 +335,7 @@ describe('clinics API', () => {
   it('can find clinics with keyword', async () => {
     const api = await apiHelper()
 
-    const result = await api.clinics.find({ keyword: '병원' })
+    const result = await api.clinics.find({ keyword: '치과' })
     expect(result.length).toBeGreaterThan(0)
   })
 
