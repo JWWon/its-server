@@ -279,6 +279,7 @@ const generateClinic = () => {
   const names = ['좋은 치과', '나쁜 치과', '이상한 치과']
   const province = sample(provinces)
   const city = sample(cities[province])
+  const grade = sample([2, 1, 0, -1])
   const tags = [
     'tag a',
     'tag b',
@@ -291,7 +292,8 @@ const generateClinic = () => {
     province,
     city,
     name: sample(names),
-    tags: sampleSize(tags, 3)
+    tags: sampleSize(tags, 3),
+    grade
   }
 }
 
