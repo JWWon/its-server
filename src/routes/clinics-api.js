@@ -10,7 +10,13 @@ const getId = ctx => {
 
 const api = Clinic => ({
   find: async ctx => {
-    const { province, city, keyword, after } = ctx.query
+    const { province, city, keyword, after, count } = ctx.query
+    if (count) {
+      const result = await Clinic.scan()
+        .count()
+        .exec()
+      return ctx.ok(result[0])
+    }
     let query
     if (province) {
       query = Clinic.query('province').eq(province)

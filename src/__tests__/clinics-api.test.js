@@ -351,4 +351,10 @@ describe('clinics API', () => {
     expect(updated.id).toBe(created.id)
     expect(updated.name).toBe(newName)
   })
+
+  it('can get count of all clinics', async () => {
+    const api = await apiHelper()
+    const result = await api.clinics.find({ count: true })
+    expect(result).toBeGreaterThan(0)
+  })
 })
