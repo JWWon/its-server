@@ -1,11 +1,42 @@
 import { createController } from 'awilix-koa'
 import shortid from 'shortid'
 import { NotFound, BadRequest, Forbidden } from 'fejl'
-import { reduce, filter } from 'lodash'
+import { reduce, chain, shuffle, pick } from 'lodash'
 
 const getId = ctx => {
   BadRequest.assert(ctx.params.id, 'No id given')
   return ctx.params.id
+}
+
+const sortClinics = clinics => {
+  const permittedAttrs = [
+    'id',
+    'province',
+    'city',
+    'name',
+    'phone',
+    'address',
+    'landmark',
+    'webpage',
+    'director',
+    'certificates',
+    'tags',
+    'hidden'
+  ]
+  // Group by grades, and shuffle them
+  const groups = chain(clinics)
+    .groupBy(c => c.grade)
+    .map(clinicGroup => shuffle(clinicGroup))
+    .value()
+  // Merge the groups, and sanitize values
+  return chain(groups)
+    .keys()
+    .sortBy(k => !k)
+    .map(k => groups[k])
+    .flatten()
+    .filter(c => !c.hidden)
+    .map(c => pick(c, permittedAttrs))
+    .value()
 }
 
 const api = Clinic => ({
@@ -47,25 +78,10 @@ const api = Clinic => ({
         .filter('tags')
         .contains(keyword)
     if (after) query = query.startAt(after)
-    if (ctx.user) return ctx.ok(await query.exec())
 
-    const permittedAttrs = [
-      'id',
-      'province',
-      'city',
-      'name',
-      'phone',
-      'address',
-      'landmark',
-      'webpage',
-      'director',
-      'certificates',
-      'tags',
-      'hidden'
-    ]
-    return ctx.ok(
-      filter(await query.attributes(permittedAttrs).exec(), c => !c.hidden)
-    )
+    const result = await query.exec()
+    // 관리자일 경우 그대로 리턴, 아닐 경우 정렬 및 불필요한 데이터 제거 후 전달
+    return ctx.ok(ctx.user ? result : sortClinics(result))
   },
   get: async ctx => {
     const clinic = await Clinic.get(getId(ctx))

@@ -26,7 +26,10 @@ const Clinic = dynamoose.model('Clinic', {
   certificates: Object,
   createdAt: String, // Parsable with either Date or moment
   hits: Number,
-  grade: Number, // 2: A, 1: B, 0: C, -1: D
+  grade: {
+    type: Number, // 2: A, 1: B, 0: C, -1: D
+    validate: g => [2, 1, 0, -1].includes(g)
+  },
   hidden: Boolean,
   tags: {
     type: 'list',
