@@ -1,7 +1,7 @@
 import { createController } from 'awilix-koa'
 import shortid from 'shortid'
 import { NotFound, BadRequest, Forbidden } from 'fejl'
-import { reduce, chain, shuffle, pick } from 'lodash'
+import { reduce, chain, shuffle, pick, sampleSize } from 'lodash'
 
 const getId = ctx => {
   BadRequest.assert(ctx.params.id, 'No id given')
@@ -9,20 +9,23 @@ const getId = ctx => {
 }
 
 const sortClinics = clinics => {
-  const permittedAttrs = [
-    'id',
-    'province',
-    'city',
-    'name',
-    'phone',
-    'address',
-    'landmark',
-    'webpage',
-    'director',
-    'certificates',
-    'tags',
-    'hidden'
-  ]
+  const sanitize = clinic => {
+    const permittedAttrs = [
+      'id',
+      'province',
+      'city',
+      'name',
+      'phone',
+      'address',
+      'landmark',
+      'webpage',
+      'director',
+      'certificates',
+      'tags',
+      'hidden'
+    ]
+    return pick(clinic, permittedAttrs)
+  }
   // Group by grades, and shuffle them
   const groups = chain(clinics)
     .groupBy(c => c.grade)
@@ -35,13 +38,13 @@ const sortClinics = clinics => {
     .map(k => groups[k])
     .flatten()
     .filter(c => !c.hidden)
-    .map(c => pick(c, permittedAttrs))
+    .map(sanitize)
     .value()
 }
 
 const api = Clinic => ({
   find: async ctx => {
-    const { province, city, keyword, after, count } = ctx.query
+    const { province, city, banner, keyword, after, count } = ctx.query
     if (count) {
       const result = await Clinic.scan()
         .count()
@@ -53,6 +56,19 @@ const api = Clinic => ({
       query = Clinic.query('province').eq(province)
       if (city) {
         query = query.where('city').eq(city)
+        if (banner) {
+          return ctx.ok(
+            sortClinics(
+              sampleSize(
+                await query
+                  .filter('grade')
+                  .ge(1)
+                  .exec(),
+                3
+              )
+            )
+          )
+        }
       } else {
         const items = await query.attributes(['city']).exec()
         return ctx.ok(

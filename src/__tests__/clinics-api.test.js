@@ -355,6 +355,15 @@ describe('clinics API', () => {
     forEach(result, c => expect(c).toHaveProperty('id'))
   })
 
+  it('can get clinics for banner', async () => {
+    const api = await apiHelper()
+    const province = sample(provinces)
+    const city = sample(cities[province])
+    const result = await api.clinics.find({ province, city, banner: true })
+    expect(result.length).toBeLessThanOrEqual(3)
+    forEach(result, c => expect(c).toHaveProperty('id'))
+  })
+
   it('can find clinics with keyword', async () => {
     const api = await apiHelper()
 
