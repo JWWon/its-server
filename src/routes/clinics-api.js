@@ -107,9 +107,14 @@ const api = Clinic => ({
   },
   create: async ctx => {
     Forbidden.assert(ctx.user, 'Not allowed')
-    return ctx.created(
-      await Clinic.create({ ...ctx.request.body, id: shortid.generate() })
-    )
+    try {
+      return ctx.created(
+        await Clinic.create({ ...ctx.request.body, id: shortid.generate() })
+      )
+    } catch (e) {
+      if (e.name === 'ValidationError') return ctx.throw(400, 'Invalid model')
+      throw e
+    }
   },
   update: async ctx => {
     Forbidden.assert(ctx.user, 'Not allowed')

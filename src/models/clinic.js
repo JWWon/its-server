@@ -1,4 +1,5 @@
 import dynamoose from 'dynamoose'
+import { chain } from 'lodash'
 
 const Clinic = dynamoose.model('Clinic', {
   id: {
@@ -23,7 +24,41 @@ const Clinic = dynamoose.model('Clinic', {
   director: String,
   directions: Object,
   // ex. { '도보': '불가능', '버스': '30분', '비행기': '인천공항에서 택시' }
-  certificates: Object,
+  certificates: {
+    type: Object,
+    validate: c => {
+      const certificatesModel = {
+        association: {
+          image: String
+        },
+        specialist: {
+          chief: String,
+          school: String,
+          period: {
+            startAt: String,
+            endAt: String
+          },
+          image: String
+        },
+        invisalign: {
+          image: String
+        }
+      }
+      const isValid = (value, model) => {
+        if (typeof model === 'function' && typeof value === typeof model())
+          return true
+        return chain(value)
+          .keys()
+          .reduce(
+            (result, k) =>
+              result && value[k] && model[k] && isValid(value[k], model[k]),
+            true
+          )
+          .value()
+      }
+      return isValid(c, certificatesModel)
+    }
+  },
   createdAt: String, // Parsable with either Date or moment
   hits: Number,
   grade: {

@@ -308,6 +308,22 @@ describe('clinics API', () => {
     expect(clinic).toEqual(expect.objectContaining(data))
   })
 
+  it('cannot create a clinic with invalid certificates', async () => {
+    const api = await apiHelper(true)
+    const data = generateClinic()
+    const { response } = await throws(
+      api.clinics.create({
+        ...data,
+        certificates: {
+          association: {
+            chief: 3
+          }
+        }
+      })
+    )
+    expect(response.status).toBe(400)
+  })
+
   it('can get clinic', async () => {
     const api = await apiHelper(true)
     const created = await api.clinics.create(generateClinic())
