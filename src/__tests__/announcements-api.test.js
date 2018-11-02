@@ -4,7 +4,7 @@ import { sample } from 'lodash'
 const generateData = () => ({
   title: sample(['Hello', '배가 고프네용', '좋은 이벤트가 있습니다']),
   content:
-    '{"MAIN_ABOUT":{"blocks":[{"key":"6ci8g","text":"안녕하세요?","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}}'
+    '{"blocks":[{"key":"6ci8g","text":"안녕하세요?","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
 })
 let createdId
 
