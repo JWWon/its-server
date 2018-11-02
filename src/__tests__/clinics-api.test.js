@@ -300,26 +300,35 @@ const generateClinic = () => {
     도보: '강남역 10번 출구에서 5분 거리',
     자차: '삼성전자 지하에 주차 후 도보 5분'
   }
-  // const certificates = {
-  //   association: {
-  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
-  //   },
-  //   specialist: {
-  //     chief: sample(['윤계상', '이동욱']),
-  //     schoole: sample([
-  //       '경희대학교',
-  //       '서울대학교',
-  //       '고려대학교',
-  //       '한양대학교',
-  //       '가톨릭대학교'
-  //     ]),
-  //     period: { startAt: '2014.05.21', endAt: '2018.06.12' },
-  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
-  //   },
-  //   invisalign: {
-  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
-  //   }
-  // }
+  const certificates = {
+    association: {
+      // image: sample([
+      //   'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C',
+      //   ''
+      // ])
+    },
+    specialist: {
+      chief: sample(['윤계상', '이동욱']),
+      school: sample([
+        '경희대학교',
+        '서울대학교',
+        '고려대학교',
+        '한양대학교',
+        '가톨릭대학교'
+      ]),
+      period: { startAt: '2014.05.21', endAt: '2018.06.12' }
+      // image: sample([
+      //   'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C',
+      //   ''
+      // ])
+    },
+    invisalign: {
+      // image: sample([
+      //   'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C',
+      //   ''
+      // ])
+    }
+  }
   const tags = [
     'tag a',
     'tag b',
@@ -339,7 +348,7 @@ const generateClinic = () => {
     webpage,
     timetable,
     directions,
-    // certificates,
+    certificates,
     grade,
     tags: sampleSize(tags, 3)
   }
@@ -374,7 +383,8 @@ describe('clinics API', () => {
 
   it('can get clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.clinics.create(generateClinic())
+    const clinic = generateClinic()
+    const created = await api.clinics.create(clinic)
 
     const gotten = await api.clinics.get(created.id)
     expect(gotten).toEqual(created)
@@ -382,7 +392,8 @@ describe('clinics API', () => {
 
   it('can remove clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.clinics.create(generateClinic())
+    const clinic = generateClinic()
+    const created = await api.clinics.create(clinic)
 
     await api.clinics.remove(created.id)
 
@@ -392,8 +403,8 @@ describe('clinics API', () => {
 
   it('can find clinics', async () => {
     const api = await apiHelper(true)
-
-    const created = await api.clinics.create(generateClinic())
+    const clinic = generateClinic()
+    const created = await api.clinics.create(clinic)
 
     const result = await api.clinics.find()
     expect(result).toContainEqual(created)
@@ -437,8 +448,9 @@ describe('clinics API', () => {
 
   it('can update clinic', async () => {
     const api = await apiHelper(true)
-    const created = await api.clinics.create(generateClinic())
-    const newName = '나쁜 병원'
+    const clinic = generateClinic()
+    const created = await api.clinics.create(clinic)
+    const newName = '제일 좋은 병원'
 
     const updated = await api.clinics
       .update(created.id, { name: newName })
