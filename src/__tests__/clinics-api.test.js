@@ -20,6 +20,7 @@ const provinces = [
   '경북',
   '제주'
 ]
+
 const cities = {
   서울: [
     '강남구',
@@ -276,10 +277,49 @@ const cities = {
 }
 
 const generateClinic = () => {
-  const names = ['좋은 치과', '나쁜 치과', '이상한 치과']
   const province = sample(provinces)
   const city = sample(cities[province])
+  const name = sample(['좋은 치과', '나쁜 치과', '이상한 치과', '미인 치과'])
+  const phone = '010-1234-5678'
   const grade = sample([2, 1, 0, -1])
+  const address = `${province} ${city}`
+  const landmark = sample([
+    '강남역',
+    '잠실 종합경기장',
+    '압구정 디브릿지',
+    '경희대학교 국제캠퍼스'
+  ])
+  const webpage = 'https://www.instagram.com'
+  const timetable = {
+    '월, 수, 금': '08:00 - 18:00',
+    '화, 목': '10:00 - 22:00',
+    '토, 일': '10:00 - 14:00',
+    휴무일: '공휴일'
+  }
+  const directions = {
+    도보: '강남역 10번 출구에서 5분 거리',
+    자차: '삼성전자 지하에 주차 후 도보 5분'
+  }
+  // const certificates = {
+  //   association: {
+  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
+  //   },
+  //   specialist: {
+  //     chief: sample(['윤계상', '이동욱']),
+  //     schoole: sample([
+  //       '경희대학교',
+  //       '서울대학교',
+  //       '고려대학교',
+  //       '한양대학교',
+  //       '가톨릭대학교'
+  //     ]),
+  //     period: { startAt: '2014.05.21', endAt: '2018.06.12' },
+  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
+  //   },
+  //   invisalign: {
+  //     image: 'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C'
+  //   }
+  // }
   const tags = [
     'tag a',
     'tag b',
@@ -288,12 +328,20 @@ const generateClinic = () => {
     'hello',
     'world'
   ]
+
   return {
     province,
     city,
-    name: sample(names),
-    tags: sampleSize(tags, 3),
-    grade
+    name,
+    phone,
+    address,
+    landmark,
+    webpage,
+    timetable,
+    directions,
+    // certificates,
+    grade,
+    tags: sampleSize(tags, 3)
   }
 }
 

@@ -11,7 +11,8 @@ const data = {
     'http://www.ballplaya.com/xe/files/attach/images/22648/978/111/ff2014105fd46485f2eb2782db2394c6.png',
     'https://0.soompi.io/wp-content/uploads/2017/09/25015705/BTS-Steve-Aoki.jpg?s=900x600&e=t'
   ]),
-  type: sample(['slide', 'news'])
+  type: sample(['slide', 'news']),
+  alt: '이미지입니다'
 }
 let createdId
 
