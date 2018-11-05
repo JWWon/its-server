@@ -1,5 +1,5 @@
 import dynamoose from 'dynamoose'
-import { chain } from 'lodash'
+import { isValid } from '../lib/validate'
 
 const Clinic = dynamoose.model('Clinic', {
   id: {
@@ -27,7 +27,7 @@ const Clinic = dynamoose.model('Clinic', {
   certificates: {
     type: Object,
     validate: c => {
-      const certificatesModel = {
+      const model = {
         association: {
           image: String
         },
@@ -44,19 +44,7 @@ const Clinic = dynamoose.model('Clinic', {
           image: String
         }
       }
-      const isValid = (value, model) => {
-        if (typeof model === 'function' && typeof value === typeof model())
-          return true
-        return chain(value)
-          .keys()
-          .reduce(
-            (result, k) =>
-              result && value[k] && model[k] && isValid(value[k], model[k]),
-            true
-          )
-          .value()
-      }
-      return isValid(c, certificatesModel)
+      return isValid(c, model)
     }
   },
   createdAt: String, // Parsable with either Date or moment
