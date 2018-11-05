@@ -7,7 +7,12 @@ const api = Meta => ({
     Forbidden.assert(ctx.user, 'Not allowed')
     const payload = ctx.request.body
     BadRequest.assert(payload, 'No data')
-    return ctx.ok(await new Meta({ ...payload, id: 0 }).save())
+    try {
+      return ctx.ok(await new Meta({ ...payload, id: 0 }).save())
+    } catch (e) {
+      if (e.name === 'ValidationError') return ctx.throw(400, 'Invalid model')
+      throw e
+    }
   }
 })
 
