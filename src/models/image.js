@@ -12,7 +12,10 @@ const Image = dynamoose.model('Image', {
   desktopSrc: String,
   mobileSrc: String,
   alt: String,
-  href: String
+  href: String,
+  // Columns only for news
+  title: String,
+  content: String
 })
 
 export default Image

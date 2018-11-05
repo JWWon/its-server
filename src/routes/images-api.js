@@ -19,6 +19,12 @@ const api = Image => ({
     const data = ctx.request.body
     BadRequest.assert(data.desktopSrc, 'Missing desktop image')
     BadRequest.assert(data.mobileSrc, 'Missing mobile image')
+    BadRequest.assert(
+      data.type === 'news'
+        ? data.title && data.content
+        : !data.title || !data.content,
+      'News requires title and content'
+    )
     return ctx.created(await Image.create({ ...data, id: shortid.generate() }))
   },
   update: async ctx => {
