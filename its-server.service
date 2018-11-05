@@ -1,3 +1,9 @@
+# Location: /etc/systemd/system/its-server.service
+# $ sudo systemctl [start/restart/status/stop] its-server
+# Show logs
+# $ journalctl -u its-server
+# Permission denied: Add execution permission to /dist/bin/www.js
+
 [Unit]
 Description=its-server
 
