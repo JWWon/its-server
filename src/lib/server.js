@@ -24,13 +24,15 @@ export async function createServer() {
   logger.debug('Creating server...')
   const app = new Koa()
 
-  dynamoose.AWS.config.update({
-    accessKeyId: env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
-    region: env.AWS_REGION
-  })
-  // Development
-  dynamoose.local()
+  if (env.NODE_ENV === 'development') {
+    // Configure local dynamodb
+    dynamoose.AWS.config.update({
+      accessKeyId: 'RandomString',
+      secretAccessKey: 'RandomString',
+      region: 'ap-northeast-2'
+    })
+    dynamoose.local()
+  }
 
   // Container is configured with our services and whatnot.
   const container = (app.container = configureContainer())
