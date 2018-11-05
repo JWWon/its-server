@@ -55,6 +55,14 @@ export async function apiHelper(admin) {
     meta: {
       get: () => client.get('/meta').then(assertStatus(200)),
       update: data => client.patch('/meta', data).then(assertStatus(200))
+    },
+    registrations: {
+      find: params =>
+        client.get('/registrations', { params }).then(assertStatus(200)),
+      create: data =>
+        client.post('/registrations', data).then(assertStatus(201)),
+      remove: id =>
+        client.delete(`/registrations/${id}`).then(assertStatus(204))
     }
   }
 }
