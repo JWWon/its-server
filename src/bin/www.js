@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { createServer } from '../lib/server'
 import { env } from '../lib/env'
 import { logger } from '../lib/logger'
