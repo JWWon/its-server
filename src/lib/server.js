@@ -24,7 +24,7 @@ export async function createServer() {
   logger.debug('Creating server...')
   const app = new Koa()
 
-  if (env.NODE_ENV === 'development') {
+  if (env.NODE_ENV === 'development' || env.NODE_ENV === 'test') {
     // Configure local dynamodb
     dynamoose.AWS.config.update({
       accessKeyId: 'RandomString',
