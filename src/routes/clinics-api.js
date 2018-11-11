@@ -8,24 +8,27 @@ const getId = ctx => {
   return ctx.params.id
 }
 
+const sanitize = clinic => {
+  const permittedAttrs = [
+    'id',
+    'province',
+    'city',
+    'name',
+    'phone',
+    'address',
+    'landmark',
+    'webpage',
+    'timetable',
+    'director',
+    'directions',
+    'certificates',
+    'tags',
+    'hidden'
+  ]
+  return pick(clinic, permittedAttrs)
+}
+
 const sortClinics = clinics => {
-  const sanitize = clinic => {
-    const permittedAttrs = [
-      'id',
-      'province',
-      'city',
-      'name',
-      'phone',
-      'address',
-      'landmark',
-      'webpage',
-      'director',
-      'certificates',
-      'tags',
-      'hidden'
-    ]
-    return pick(clinic, permittedAttrs)
-  }
   // Group by grades, and shuffle them
   const groups = chain(clinics)
     .groupBy(c => c.grade)
@@ -103,7 +106,7 @@ const api = Clinic => ({
     const clinic = await Clinic.get(getId(ctx))
     NotFound.assert(clinic, 'Clinic not found')
     // TODO add hits count
-    return ctx.ok(clinic)
+    return ctx.ok(ctx.user ? clinic : sanitize(clinic))
   },
   create: async ctx => {
     Forbidden.assert(ctx.user, 'Not allowed')
