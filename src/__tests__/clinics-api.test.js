@@ -390,6 +390,18 @@ describe('clinics API', () => {
     expect(gotten).toEqual(created)
   })
 
+  it('a clinic does not have unpermitted attributes', async () => {
+    const adminApi = await apiHelper(true)
+    const clinic = generateClinic()
+    const created = await adminApi.clinics.create(clinic)
+
+    const api = await apiHelper()
+    const gotten = await api.clinics.get(created.id)
+    expect(gotten.grade).not.toBeDefined()
+    delete clinic.grade
+    expect(gotten).toEqual(expect.objectContaining(clinic))
+  })
+
   it('can remove clinic', async () => {
     const api = await apiHelper(true)
     const clinic = generateClinic()
