@@ -388,6 +388,7 @@ describe('clinics API', () => {
 
     const gotten = await api.clinics.get(created.id)
     expect(gotten).toEqual(created)
+    expect(gotten.createdAt).toBeDefined()
   })
 
   it('a clinic does not have unpermitted attributes', async () => {
