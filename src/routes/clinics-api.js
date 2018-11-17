@@ -47,15 +47,7 @@ const sortClinics = clinics => {
 
 const api = Clinic => ({
   find: async ctx => {
-    const {
-      province,
-      city,
-      banner,
-      keyword,
-      after,
-      limit = 100,
-      count
-    } = ctx.query
+    const { province, city, banner, keyword, count } = ctx.query
     if (count) {
       const result = await Clinic.scan()
         .count()
@@ -106,23 +98,12 @@ const api = Clinic => ({
         .contains(keyword)
 
     const exec = query => {
-      const getItems = async (lastKey, count) => {
-        const result = await query
-          .startAt(lastKey)
-          .limit(count)
-          .exec()
-        if (
-          result.length >= count ||
-          !result.lastKey // No more items to query
-        )
-          return result
-        return concat(
-          result,
-          await getItems(result.lastKey, count - result.length)
-        )
+      const getItems = async lastKey => {
+        const result = await query.startAt(lastKey).exec()
+        if (!result.lastKey) return result // No more items to query
+        return concat(result, await getItems(result.lastKey))
       }
-      if (!ctx.user) return getItems(after ? { id: { S: after } } : undefined) // Disable for normal user
-      return getItems(after ? { id: { S: after } } : undefined, limit)
+      return getItems()
     }
 
     const result = await exec(query)
