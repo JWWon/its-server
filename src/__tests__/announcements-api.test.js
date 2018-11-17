@@ -15,6 +15,8 @@ describe('announcements API', () => {
     const announcement = await api.announcements.create(data)
 
     expect(announcement.id).toBeDefined()
+    expect(announcement.createdAt).toBeDefined()
+    expect(announcement.updatedAt).toBeDefined()
     createdId = announcement.id
     expect(announcement.nonexistent).not.toBeDefined()
     expect(announcement).toEqual(expect.objectContaining(data))
@@ -51,5 +53,6 @@ describe('announcements API', () => {
 
     expect(updated.id).toBe(created.id)
     expect(updated.title).toBe(newTitle)
+    expect(updated.createdAt).not.toBe(updated.updatedAt)
   })
 })
