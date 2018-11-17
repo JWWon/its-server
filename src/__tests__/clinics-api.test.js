@@ -413,8 +413,8 @@ describe('clinics API', () => {
     expect(result).toContainEqual(created)
   })
 
-  it('can find clinics with limit and after', async () => {
-    const api = await apiHelper()
+  it('admin can find clinics with limit and after', async () => {
+    const api = await apiHelper(true)
     const limitResult = await api.clinics.find({ limit: 2 })
     expect(limitResult).toHaveLength(2)
     expect(limitResult[1].id).toBeDefined()

@@ -121,6 +121,7 @@ const api = Clinic => ({
           await getItems(result.lastKey, count - result.length)
         )
       }
+      if (!ctx.user) return getItems(after ? { id: { S: after } } : undefined) // Disable for normal user
       return getItems(after ? { id: { S: after } } : undefined, limit)
     }
 
