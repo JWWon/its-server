@@ -409,8 +409,19 @@ describe('clinics API', () => {
     const clinic = generateClinic()
     const created = await api.clinics.create(clinic)
 
-    const result = await api.clinics.find()
+    const result = await api.clinics.find({ limit: 10000 })
     expect(result).toContainEqual(created)
+  })
+
+  it('can find clinics with limit and after', async () => {
+    const api = await apiHelper()
+    const limitResult = await api.clinics.find({ limit: 2 })
+    expect(limitResult).toHaveLength(2)
+    expect(limitResult[1].id).toBeDefined()
+
+    const afterResult = await api.clinics.find({ after: limitResult[1].id })
+    expect(afterResult.length).toBeLessThanOrEqual(100)
+    expect(afterResult).toEqual(expect.not.arrayContaining(limitResult))
   })
 
   it('can find clinic counts of a province', async () => {

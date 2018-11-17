@@ -1,7 +1,7 @@
 import { createController } from 'awilix-koa'
 import shortid from 'shortid'
 import { NotFound, BadRequest, Forbidden } from 'fejl'
-import { reduce, chain, shuffle, pick, sampleSize } from 'lodash'
+import { reduce, chain, shuffle, pick, sampleSize, concat } from 'lodash'
 
 const getId = ctx => {
   BadRequest.assert(ctx.params.id, 'No id given')
@@ -47,7 +47,15 @@ const sortClinics = clinics => {
 
 const api = Clinic => ({
   find: async ctx => {
-    const { province, city, banner, keyword, after, count } = ctx.query
+    const {
+      province,
+      city,
+      banner,
+      keyword,
+      after,
+      limit = 100,
+      count
+    } = ctx.query
     if (count) {
       const result = await Clinic.scan()
         .count()
@@ -96,9 +104,27 @@ const api = Clinic => ({
         .contains(keyword)
         .filter('tags')
         .contains(keyword)
-    if (after) query = query.startAt(after)
 
-    const result = await query.exec()
+    const exec = query => {
+      const getItems = async (lastKey, count) => {
+        const result = await query
+          .startAt(lastKey)
+          .limit(count)
+          .exec()
+        if (
+          result.length >= count ||
+          !result.lastKey // No more items to query
+        )
+          return result
+        return concat(
+          result,
+          await getItems(result.lastKey, count - result.length)
+        )
+      }
+      return getItems(after ? { id: { S: after } } : undefined, limit)
+    }
+
+    const result = await exec(query)
     // 관리자일 경우 그대로 리턴, 아닐 경우 정렬 및 불필요한 데이터 제거 후 전달
     return ctx.ok(ctx.user ? result : sortClinics(result))
   },
