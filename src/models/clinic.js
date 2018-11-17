@@ -31,9 +31,8 @@ const Clinic = dynamoose.model(
         type: Object,
         validate: c => {
           const model = {
-            association: {
-              image: String
-            },
+            association: Boolean,
+            invisalign: Boolean,
             specialist: {
               chief: String,
               school: String,
@@ -41,9 +40,6 @@ const Clinic = dynamoose.model(
                 startAt: String,
                 endAt: String
               },
-              image: String
-            },
-            invisalign: {
               image: String
             }
           }

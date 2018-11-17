@@ -301,12 +301,7 @@ const generateClinic = () => {
     자차: '삼성전자 지하에 주차 후 도보 5분'
   }
   const certificates = {
-    association: {
-      // image: sample([
-      //   'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C',
-      //   ''
-      // ])
-    },
+    association: sample([true, false]),
     specialist: {
       chief: sample(['윤계상', '이동욱']),
       school: sample([
@@ -322,12 +317,7 @@ const generateClinic = () => {
       //   ''
       // ])
     },
-    invisalign: {
-      // image: sample([
-      //   'https://t1.daumcdn.net/cfile/tistory/237DC44E5901A5411C',
-      //   ''
-      // ])
-    }
+    invisalign: sample([true, false])
   }
   const tags = [
     'tag a',
