@@ -458,6 +458,13 @@ describe('clinics API', () => {
     expect(result.length).toBeGreaterThan(0)
   })
 
+  it('can find clinics with a substring of tag', async () => {
+    const api = await apiHelper()
+
+    const result = await api.clinics.find({ keyword: 'tag' })
+    expect(result.length).toBeGreaterThan(0)
+  })
+
   it('can update clinic', async () => {
     const api = await apiHelper(true)
     const clinic = generateClinic()

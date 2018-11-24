@@ -53,8 +53,12 @@ const Clinic = dynamoose.model(
       },
       hidden: Boolean,
       tags: {
-        type: 'list',
-        list: [String]
+        type: String,
+        // query의 filter에서 사용하는 값도 validate, set 거치므로
+        // 키워드 검색에 문제가 없도록 하기 위해 string도 허용
+        validate: tags => Array.isArray(tags) || typeof tags === 'string',
+        set: tags => (typeof tags === 'string' ? tags : JSON.stringify(tags)),
+        get: tagsString => JSON.parse(tagsString)
       }
     },
     { timestamps: true }
