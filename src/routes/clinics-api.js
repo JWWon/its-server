@@ -23,7 +23,8 @@ const sanitize = clinic => {
     'directions',
     'certificates',
     'tags',
-    'hidden'
+    'hidden',
+    'grade'
   ]
   return pick(clinic, permittedAttrs)
 }

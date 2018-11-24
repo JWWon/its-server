@@ -388,8 +388,6 @@ describe('clinics API', () => {
 
     const api = await apiHelper()
     const gotten = await api.clinics.get(created.id)
-    expect(gotten.grade).not.toBeDefined()
-    delete clinic.grade
     expect(gotten).toEqual(expect.objectContaining(clinic))
   })
 
