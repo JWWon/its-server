@@ -58,7 +58,10 @@ const Clinic = dynamoose.model(
         // 키워드 검색에 문제가 없도록 하기 위해 string도 허용
         validate: tags => Array.isArray(tags) || typeof tags === 'string',
         set: tags => (typeof tags === 'string' ? tags : JSON.stringify(tags)),
-        get: tagsString => JSON.parse(tagsString)
+        get: tagsString => {
+          const tags = JSON.parse(tagsString)
+          return Array.isArray(tags) ? tags : []
+        }
       }
     },
     { timestamps: true }
