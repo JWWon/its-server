@@ -135,6 +135,22 @@ const api = Clinic => ({
   remove: async ctx => {
     Forbidden.assert(ctx.user, 'Not allowed')
     return ctx.noContent(await Clinic.delete({ id: getId(ctx) }))
+  },
+  adjust: async ctx => {
+    const queries = chain(await Clinic.scan().exec())
+      .filter(
+        c =>
+          c.certificates &&
+          (c.certificates.invisalign || c.certificates.association)
+      )
+      .map(c => {
+        c.certificates.invisalign = !!c.certificates.invisalign
+        c.certificates.association = !!c.certificates.association
+        return c.save()
+      })
+      .value()
+    await Promise.all(queries)
+    return ctx.ok('Updated ' + queries.length)
   }
 })
 
@@ -145,3 +161,4 @@ export default createController(api)
   .post('', 'create')
   .patch('/:id', 'update')
   .delete('/:id', 'remove')
+  .get('/adjust', 'adjust')
