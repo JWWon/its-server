@@ -18,10 +18,15 @@ export function configureContainer() {
       // to this file's parent directory.
       cwd: `${__dirname}/..`,
       formatName: name =>
-        name.replace(
-          /\w+/g,
-          w => w[0].toUpperCase() + w.slice(1).toLowerCase()
-        ),
+        name
+          .split('-')
+          .map(n =>
+            n.replace(
+              /\w+/g,
+              w => w[0].toUpperCase() + w.slice(1).toLowerCase()
+            )
+          )
+          .join(''),
       resolverOptions: {
         lifetime: Lifetime.SINGLETON,
         register: asValue
