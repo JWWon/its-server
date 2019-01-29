@@ -1,11 +1,11 @@
 import { Provider, Notification } from 'apn'
+import path from 'path'
 
 const provider = new Provider({
   token: {
-    // TODO set credentials
-    key: 'path/to/APNsAuthKey_XXXXXXXXXX.p8',
-    keyId: 'key-id',
-    teamId: 'developer-team-id'
+    key: path.resolve(__dirname, '../../AuthKey_K4QFJ5BYPV.p8'),
+    keyId: 'K4QFJ5BYPV',
+    teamId: '4APG4YR4B6'
   },
   production: process.env.NODE_ENV === 'production'
 })
