@@ -10,7 +10,13 @@ const provider = new Provider({
   production: process.env.NODE_ENV === 'production'
 })
 
+const bundleId = 'com.itso-o.client.ios'
 export const send = (notification, recipients) => {
+  if (!recipients || recipients.length === 0) {
+    console.warn('No recipients specified')
+    return Promise.resolve()
+  }
   const note = Notification(notification)
+  note.topic = bundleId
   return provider.send(note, recipients)
 }
