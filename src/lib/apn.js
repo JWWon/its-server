@@ -16,7 +16,7 @@ export const send = (notification, recipients) => {
     console.warn('No recipients specified')
     return Promise.resolve()
   }
-  const note = Notification(notification)
+  const note = new Notification(notification)
   note.topic = bundleId
   return provider.send(note, recipients)
 }
