@@ -1,10 +1,16 @@
-import dynamoose from 'dynamoose'
+import dynamoose, { Schema } from 'dynamoose'
 
-const ApnToken = dynamoose.model('ApnToken', {
-  token: {
-    type: String,
-    hashKey: true
-  }
-})
+const ApnToken = dynamoose.model(
+  'ApnToken',
+  new Schema(
+    {
+      token: {
+        type: String,
+        hashKey: true
+      }
+    },
+    { timestamps: true }
+  )
+)
 
 export default ApnToken

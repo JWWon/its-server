@@ -18,8 +18,7 @@ const api = ApnToken => ({
   },
   register: async ctx => {
     const { apnToken } = ctx.request.body
-    await ApnToken.create({ token: apnToken })
-    return ctx.ok()
+    return ctx.ok(await ApnToken.update({ token: apnToken }))
   }
 })
 

@@ -29,9 +29,21 @@ describe('users API', () => {
     expect(created.email).toEqual(user.email)
   })
 
+  const apnToken = shortid.generate()
+  let createdAt
+  let updatedAt
   it('can register device token', async () => {
     const api = await apiHelper(true)
-    const apnToken = shortid.generate()
-    await api.register({ apnToken })
+    const token = await api.register({ apnToken })
+    expect(token.token).toBeDefined()
+    createdAt = token.createdAt
+    updatedAt = token.updatedAt
+  })
+
+  it('can update registered device token', async () => {
+    const api = await apiHelper(true)
+    const token = await api.register({ apnToken })
+    expect(token.createdAt).toEqual(createdAt)
+    expect(token.updatedAt).not.toEqual(updatedAt)
   })
 })
