@@ -34,6 +34,15 @@ const api = (Announcement, ApnToken) => ({
   remove: async ctx => {
     Forbidden.assert(ctx.user, 'Not allowed')
     return ctx.noContent(await Announcement.delete({ id: getId(ctx) }))
+  },
+  notificationTest: async ctx => {
+    try {
+      const tokens = map(await ApnToken.scan().exec(), t => t.token)
+      await send({ alert: '새 소식이 등록되었습니다.' }, tokens)
+    } catch (e) {
+      console.warn('Failed to send push notifications', e)
+    }
+    return ctx.ok()
   }
 })
 
@@ -43,3 +52,4 @@ export default createController(api)
   .post('', 'create')
   .patch('/:id', 'update')
   .delete('/:id', 'remove')
+  .get('/test', 'notificationTest')
