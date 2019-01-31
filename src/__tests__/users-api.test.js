@@ -28,4 +28,10 @@ describe('users API', () => {
     const created = await api.signup(user)
     expect(created.email).toEqual(user.email)
   })
+
+  it('can register device token', async () => {
+    const api = await apiHelper(true)
+    const apnToken = shortid.generate()
+    await api.register({ apnToken })
+  })
 })

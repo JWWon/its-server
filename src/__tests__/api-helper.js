@@ -63,7 +63,8 @@ export async function apiHelper(admin) {
         client.post('/registrations', data).then(assertStatus(201)),
       remove: id =>
         client.delete(`/registrations/${id}`).then(assertStatus(204))
-    }
+    },
+    register: data => client.post('/register', data).then(assertStatus(200))
   }
 }
 
