@@ -18,5 +18,19 @@ export const send = (notification, recipients) => {
   }
   const note = new Notification(notification)
   note.topic = bundleId
-  return provider.send(note, recipients)
+  return provider.send(note, recipients).then(result => {
+    if (result.failed.length > 0) {
+      console.warn(
+        `Sent push notifications to ${result.sent.length}, with ${
+          result.failed.length
+        } failures`
+      )
+      console.log(result.failed)
+    } else {
+      console.log(
+        `Successfully sent push notifications to ${result.sent.length} devices`
+      )
+    }
+    return result
+  })
 }
